@@ -1,3 +1,5 @@
+import os
+
 from flask import (
     Flask,
     redirect,
@@ -6,6 +8,8 @@ from flask import (
 from twilio import twiml
 
 app = Flask(__name__)
+app.config.from_object(os.environ['APP_SETTINGS'])
+
 
 @app.route("/")
 def hello():
@@ -34,9 +38,10 @@ def callcongress():
     # look at stuff ON response and then do stuff?
     return str(response)
 
-@app.route('/callcongress/state-lookup', methods=['GET', 'POST'], state=None)
-def state_lookup():
+@app.route('/callcongress/state-lookup', methods=['GET', 'POST'])
+def state_lookup(state=None):
     """Look up state from given zipcode."""
+
     if not state:
         zip_digits = request.values.get('Digits', None)
         # Map zipcode to our DB/map of states
