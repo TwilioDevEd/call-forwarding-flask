@@ -13,6 +13,21 @@ app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
 db = SQLAlchemy(app)
 
+# TODO: move this stuff to the right dir structure for flask
+def prepare_app(environment='development', p_db=db):
+    app.config.from_object(config_env_files[environment])
+    p_db.init_app(app)
+    # load views by importing them
+    from . import views
+    return app
+
+
+def save_and_commit(item):
+    db.session.add(item)
+    db.session.commit()
+
+db.save = save_and_commit
+
 
 @app.route("/")
 def hello():
