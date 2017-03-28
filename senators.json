@@ -1,5 +1,11 @@
 {    
-    "states": ["IL", "MN", "CA"],
+    "states": [
+        "AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL",
+        "IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT",
+        "NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI",
+        "SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY","AS","DC",
+        "FM","GU","MH","MP","PW","PR","VI","AE","AA","AE","AE","AE","AP"
+    ],
     "IL": [
         {"name": "Tammy Duckworth", "phone": "+16302000584", "state": "IL"},
         {"name": "Dick Durbin", "phone": "+16302000584", "state": "IL"}
@@ -12,5 +18,4 @@
         {"name": "Amy Klobuchar", "phone": "+16302000584", "state": "MN"},
         {"name": "Al Franken", "phone": "+16302000584", "state": "MN"}
     ]
-   
 }

@@ -10,7 +10,7 @@ from . import app
 from models import (
     Senator,
     State,
-    Zip,
+    Zipcode,
 )
 from helpers import senator_lookup
 

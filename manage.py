@@ -1,9 +1,12 @@
+import csv
+
 from flask.ext.script import Manager
 from flask.ext.migrate import (
     Migrate,
     MigrateCommand,
 )
 from flask_migrate import upgrade as upgrade_database
+
 from call_forward_flask import (
     app,
     db,
@@ -37,6 +40,14 @@ def test():
 def dbseed():
     with open('senators.json') as senator_data:
         parsers.data_from_json(senator_data.read())
+
+    with open('free-zipcode-database.csv') as zip_data:
+        zip_list = []
+        reader = csv.reader(zip_data, delimiter=",")
+        for line in enumerate(reader):
+            zip_list.append(line)
+        parsers.zips_from_csv(zip_list)
+
 
 if __name__ == "__main__":
     manager.run()

@@ -4,7 +4,7 @@ from call_forward_flask import db
 from call_forward_flask.models import (
     Senator,
     State,
-    Zip,
+    Zipcode,
 )
 
 
@@ -13,7 +13,9 @@ def data_from_json(data):
 
     for s in state_list:
         state = State(name=s)
-        state.senators = senators_from_json(json.loads(data).get(s))
+        # Add senators for this state if we have them.
+        if json.loads(data).get(s):
+            state.senators = senators_from_json(json.loads(data).get(s))
         db.save(state)
 
     return
@@ -32,3 +34,17 @@ def senators_from_json(senator_data):
         senators.append(Senator(name=name[0], phone_number=phone))
 
     return senators
+
+def zips_from_csv(zipcode_data):
+    # We can skip the first line from csv as it just defines columns
+    all_zipcodes = []
+    for zipcode in zipcode_data[1:]:
+        # get zip and statename
+        zcode = zipcode[1][0]
+        statename = zipcode[1][3]
+        zipcode_obj = Zipcode(zipcode=zcode, state=statename)
+        all_zipcodes.append(zipcode_obj)
+    db.session.bulk_save_objects(all_zipcodes)
+    db.session.commit()
+
+    return

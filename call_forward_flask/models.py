@@ -13,13 +13,13 @@ class State(db.Model):
         self.name = name
 
 
-class Zip(db.Model):
+class Zipcode(db.Model):
     """id | zip | state (fk)"""
     __tablename__ = 'zipcodes'
 
     id = db.Column(db.Integer, primary_key=True)
     zipcode = db.Column(db.String, nullable=False)
-    state_id = db.Column(db.Integer, db.ForeignKey('states.id'))
+    state = db.Column(db.String, nullable=False)
 
     def __init__(self, zipcode, state):
         self.zipcode = zipcode

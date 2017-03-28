@@ -1,7 +1,7 @@
 from models import (
     Senator,
     State,
-    Zip,
+    Zipcode,
 )
 
 def senator_lookup(state=None):
