@@ -1,14 +1,34 @@
-from models import StateSenator, Zip
 import json
 
+from call_forward_flask import db
+from call_forward_flask.models import (
+    Senator,
+    State,
+    Zip,
+)
+
+
+def data_from_json(data):
+    state_list = json.loads(data).get('states')
+
+    for s in state_list:
+        state = State(name=s)
+        state.senators = senators_from_json(json.loads(data).get(s))
+        db.save(state)
+
+    return
+
+
+
 def senators_from_json(senator_data):
+    """Parse senator data from json file for db."""
     senators = []
-    senators_dict = json.loads(senator_data)
-    import pdb; pdb.set_trace()
-    for i in senators_dict['state_senators']:
-        name = i['name'],
-        state = i['state'],
-        phone = i['phone']
-        senators.append(StateSenator(name=name, state=state, phone_number=phone))
-    import pdb; pdb.set_trace()
+
+    for senator in senator_data:
+        name = senator['name'],
+        state = senator['state'],
+        phone = senator['phone']
+
+        senators.append(Senator(name=name, phone_number=phone))
+
     return senators

@@ -10,11 +10,6 @@ from . import app
 
 @app.route('/')
 def hello():
-    import pdb; pdb.set_trace()
-    # TESTING db load:
-    senators = StateSenator.query.all()
-    ## rn, no table actually being created
-    return render_template('index.html', questions=questions)
     return "Hello World, you old so and so!"
 
 @app.route('/callcongress/welcome', methods=['POST'])

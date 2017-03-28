@@ -1,29 +1,39 @@
 from call_forward_flask import db
 
 
-class StateSenator(db.Model):
-    """id | state | name | phone"""
-    __tablename__ = 'state_senators'
+class State(db.Model):
+    """id | name | senators"""
+    __tablename__ = 'states'
 
     id = db.Column(db.Integer, primary_key=True)
-    state = db.Column(db.String, nullable=False)
     name = db.Column(db.String, nullable=False)
-    phone_number = db.Column(db.String, nullable=False)
+    senators = db.relationship('Senator', backref='state', lazy='dynamic')
 
-    def __init__(self, state, name, phone_number):
-        self.state = state
+    def __init__(self, name):
         self.name = name
-        self.phone = phone_number
 
 
 class Zip(db.Model):
-    """id | zip | state"""
-    __tablename__ = 'zip_codes'
+    """id | zip | state (fk)"""
+    __tablename__ = 'zipcodes'
 
     id = db.Column(db.Integer, primary_key=True)
     zipcode = db.Column(db.String, nullable=False)
-    state = db.Column(db.String, nullable=False)
+    state_id = db.Column(db.Integer, db.ForeignKey('states.id'))
 
     def __init__(self, zipcode, state):
         self.zipcode = zipcode
         self.state = state
+
+class Senator(db.Model):
+    """id | state (fk) | name | phone"""
+    __tablename__ = 'senators'
+
+    id = db.Column(db.Integer, primary_key=True)
+    state_id = db.Column(db.Integer, db.ForeignKey('states.id'))
+    name = db.Column(db.String, nullable=False)
+    phone = db.Column(db.String, nullable=False)
+
+    def __init__(self, name, phone_number):
+        self.name = name
+        self.phone = phone_number

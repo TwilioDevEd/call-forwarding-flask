@@ -36,7 +36,7 @@ def test():
 @manager.command
 def dbseed():
     with open('senators.json') as senator_data:
-        db.save(parsers.senators_from_json(senator_data.read()))
+        parsers.data_from_json(senator_data.read())
 
 if __name__ == "__main__":
     manager.run()

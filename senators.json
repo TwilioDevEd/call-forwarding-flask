@@ -1,10 +1,16 @@
-{
-    "state_senators": [
+{    
+    "states": ["IL", "MN", "CA"],
+    "IL": [
         {"name": "Tammy Duckworth", "phone": "+16302000584", "state": "IL"},
-        {"name": "Dick Durbin", "phone": "+16302000584", "state": "IL"},
+        {"name": "Dick Durbin", "phone": "+16302000584", "state": "IL"}
+    ],
+    "CA": [
         {"name": "Dianne Feinstein", "phone": "+16302000584", "state": "CA"}, 
-        {"name": "Kamala Harris", "phone": "+16302000584", "state": "CA"},
+        {"name": "Kamala Harris", "phone": "+16302000584", "state": "CA"}
+    ],
+    "MN": [
         {"name": "Amy Klobuchar", "phone": "+16302000584", "state": "MN"},
         {"name": "Al Franken", "phone": "+16302000584", "state": "MN"}
     ]
+   
 }
