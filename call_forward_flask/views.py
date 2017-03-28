@@ -42,7 +42,7 @@ def callcongress():
                 please enter your 5-digit zip code, followed by the star.
             ''')
 
-    return str(response)
+    return Response(str(response), 200, mimetype="application/xml")
 
 @app.route('/callcongress/state-lookup', methods=['GET', 'POST'])
 def state_lookup():
@@ -66,7 +66,7 @@ def collect_zip():
             If you wish to call your senators, please enter your 5-digit zip code,
             followed by the star.
         ''')
-    return str(response)
+    return Response(str(response), 200, mimetype="application/xml")
 
 
 @app.route('/callcongress/set-state', methods=['GET', 'POST'])
@@ -99,7 +99,7 @@ def call_senators(state_id):
     response = twiml.Response()
     response.say(
         '''Connecting you to {}. After the senator's office ends the call,
-        you will be re-directed to your second senator.'''.format(senators[0].name))
+        you will be re-directed to {}.'''.format(senators[0].name, senators[1].name))
     response.dial(
         senators[0].phone,
         # TODO: hanguponstar doesn't work yet.
@@ -107,7 +107,7 @@ def call_senators(state_id):
         action=url_for('call_second_senator', state_id=state_id)
     )
 
-    return str(response)
+    return Response(str(response), 200, mimetype="application/xml")
 
 @app.route('/callcongress/call-second-senator/<state_id>', methods=['GET', 'POST'])
 def call_second_senator(state_id):
@@ -120,4 +120,4 @@ def call_second_senator(state_id):
         hangUpOnStar=True,
     )
 
-    return str(response)
+    return Response(str(response), 200, mimetype="application/xml")
