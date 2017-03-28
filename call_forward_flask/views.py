@@ -1,19 +1,21 @@
 from flask import (
     Flask,
     redirect,
+    Response,
     request,
     url_for,
 )
 from twilio import twiml
 
-from . import app
+from . import app, client
 from models import (
     Senator,
     State,
     Zipcode,
 )
-from helpers import senator_lookup
-
+from helpers import (
+    senator_lookup_by_state,
+)
 
 @app.route('/')
 def hello():
@@ -88,18 +90,34 @@ def set_state():
         return redirect(url_for('collect_zip'))
 
 
-
 @app.route('/callcongress/call-senators/<state_id>', methods=['GET', 'POST'])
 def call_senators(state_id):
     """Route for connecting caller to both of their senators."""
 
     senators = State.query.get(state_id).senators.all()
 
-    for senator in senators:
-        response = twiml.Response()
-        response.say(
-            '''Connecting you to {}. If you wish to skip this senator,
-            press the star key at any time.'''.format(senator.name))
-        response.dial(senator.phone, hangUpOnStar=True)
+    response = twiml.Response()
+    response.say(
+        '''Connecting you to {}. After the senator's office ends the call,
+        you will be re-directed to your second senator.'''.format(senators[0].name))
+    response.dial(
+        senators[0].phone,
+        # TODO: hanguponstar doesn't work yet.
+        hangUpOnStar=True,
+        action=url_for('call_second_senator', state_id=state_id)
+    )
 
-    return
+    return str(response)
+
+@app.route('/callcongress/call-second-senator/<state_id>', methods=['GET', 'POST'])
+def call_second_senator(state_id):
+    senators = State.query.get(state_id).senators.all()
+    response = twiml.Response()
+    response.say(
+        '''Connecting you to {}.'''.format(senators[1].name))
+    response.dial(
+        senators[1].phone,
+        hangUpOnStar=True,
+    )
+
+    return str(response)

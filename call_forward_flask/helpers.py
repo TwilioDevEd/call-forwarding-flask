@@ -4,14 +4,14 @@ from models import (
     Zipcode,
 )
 
-def senator_lookup(state=None):
+def senator_lookup_by_state(state=None):
     senators_to_call = []
     # Handle missing state data, try to collect from caller.
     if not state:
         # TODO: direct back to key collection route
         print('OOPS')
     else:
-        state_obj = State.query.filter_by(name=state).first()
+        state_obj = State.query.get(state)
         for senator in state_obj.senators.all():
             senators_to_call.append(senator)
 
