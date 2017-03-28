@@ -5,15 +5,18 @@ from flask import (
     redirect,
     request,
 )
+from flask.ext.sqlalchemy import SQLAlchemy
 from twilio import twiml
+
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
+db = SQLAlchemy(app)
 
 
 @app.route("/")
 def hello():
-    return "Hello World!"
+    return "Hello World, you old so and so!"
 
 @app.route('/callcongress/welcome', methods=['POST'])
 def callcongress():
@@ -70,6 +73,7 @@ def set_state():
                 followed by the star.
             ''')
         return str(response)
+
 
 if __name__ == "__main__":
     app.run()
