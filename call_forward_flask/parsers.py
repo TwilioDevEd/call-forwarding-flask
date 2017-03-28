@@ -29,6 +29,6 @@ def senators_from_json(senator_data):
         state = senator['state'],
         phone = senator['phone']
 
-        senators.append(Senator(name=name, phone_number=phone))
+        senators.append(Senator(name=name[0], phone_number=phone))
 
     return senators
