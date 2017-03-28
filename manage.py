@@ -1,7 +1,7 @@
 import csv
 
-from flask.ext.script import Manager
-from flask.ext.migrate import (
+from flask_script import Manager
+from flask_migrate import (
     Migrate,
     MigrateCommand,
 )
@@ -41,6 +41,8 @@ def dbseed():
     with open('senators.json') as senator_data:
         parsers.data_from_json(senator_data.read())
 
+@manager.command
+def dbseed_zips():
     with open('free-zipcode-database.csv') as zip_data:
         zip_list = []
         reader = csv.reader(zip_data, delimiter=",")

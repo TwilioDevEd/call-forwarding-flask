@@ -1,8 +1,7 @@
-from call_forward_flask.config import config_env_files
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
-from flask.ext.sqlalchemy import SQLAlchemy
-
+from call_forward_flask.config import config_env_files
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dev.sqlite'
