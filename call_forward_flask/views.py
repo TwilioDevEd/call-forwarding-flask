@@ -1,36 +1,20 @@
-import os
-
 from flask import (
     Flask,
     redirect,
     request,
 )
-from flask.ext.sqlalchemy import SQLAlchemy
 from twilio import twiml
 
-
-app = Flask(__name__)
-app.config.from_object(os.environ['APP_SETTINGS'])
-db = SQLAlchemy(app)
-
-# TODO: move this stuff to the right dir structure for flask
-def prepare_app(environment='development', p_db=db):
-    app.config.from_object(config_env_files[environment])
-    p_db.init_app(app)
-    # load views by importing them
-    from . import views
-    return app
+from . import app
 
 
-def save_and_commit(item):
-    db.session.add(item)
-    db.session.commit()
-
-db.save = save_and_commit
-
-
-@app.route("/")
+@app.route('/')
 def hello():
+    import pdb; pdb.set_trace()
+    # TESTING db load:
+    senators = StateSenator.query.all()
+    ## rn, no table actually being created
+    return render_template('index.html', questions=questions)
     return "Hello World, you old so and so!"
 
 @app.route('/callcongress/welcome', methods=['POST'])
@@ -88,7 +72,3 @@ def set_state():
                 followed by the star.
             ''')
         return str(response)
-
-
-if __name__ == "__main__":
-    app.run()

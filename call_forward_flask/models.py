@@ -1,4 +1,5 @@
-from app import db
+from call_forward_flask import db
+
 
 class StateSenator(db.Model):
     """id | state | name | phone"""
