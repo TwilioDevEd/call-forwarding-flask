@@ -2,10 +2,17 @@ from flask import (
     Flask,
     redirect,
     request,
+    url_for,
 )
 from twilio import twiml
 
 from . import app
+from models import (
+    Senator,
+    State,
+    Zip,
+)
+from helpers import senator_lookup
 
 
 @app.route('/')
@@ -57,13 +64,20 @@ def set_state():
     # Set state if State correct, else prompt for zipcode.
     if digits_provided == '1':
         state = request.values.get('CallerState')
-        return redirect(url_for('state_lookup', state=state))
+        state_obj = State.query.filter_by(name=state).first()
+        return redirect(url_for('call_senators', state_id=int(state_obj.id)))
+
     elif digits_provided == '2':
-        response = twiml.Response()
-        # Prompt for zipcode and redirect to state_lookup
-        with response.gather(numDigits=5, action='/callcongress/state-lookup', method='POST') as g:
-            g.say('''
-                If you wish to call your senators, please enter your 5-digit zip code,
-                followed by the star.
-            ''')
-        return str(response)
+        return redirect(url_for('collect_zip'))
+
+
+
+@app.route('/callcongress/call-senators/<state_id>', methods=['GET', 'POST'])
+def call_senators(state_id):
+    """Route for connecting caller to both of their senators."""
+    senators = State.query.get(state_id).senators.all()
+    # now we have access to senators[0].name, senators[0].phone
+    for senator in senators:
+        print(senator.name)
+
+    return
