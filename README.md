@@ -30,6 +30,9 @@ $ python manage.py db upgrade
 ```
 $ python manage.py dbseed
 ```
+```
+$ python manage.py dbseed_zips
+```
 This will load senators.json into your SQLit database.
 9. Expose your application to the internet using [ngrok](https://www.twilio.com/blog/2015/09/6-awesome-reasons-to-use-ngrok-when-testing-webhooks.html).
 ```
