@@ -44,7 +44,10 @@ def callcongress():
 
 @app.route('/callcongress/state-lookup', methods=['GET', 'POST'])
 def state_lookup():
-    """Look up state from given zipcode."""
+    """Look up state from given zipcode.
+
+    Once state is found, redirect to call_senators for forwarding.
+    """
     # TODO: handle zips that don't map to any State
     zip_digits = request.values.get('Digits', None)
     zip_obj = Zipcode.query.filter_by(zipcode=zip_digits).first()
@@ -91,8 +94,12 @@ def call_senators(state_id):
     """Route for connecting caller to both of their senators."""
 
     senators = State.query.get(state_id).senators.all()
-    # now we have access to senators[0].name, senators[0].phone
+
     for senator in senators:
-        print(senator.name)
+        response = twiml.Response()
+        response.say(
+            '''Connecting you to {}. If you wish to skip this senator,
+            press the star key at any time.'''.format(senator.name))
+        response.dial(senator.phone, hangUpOnStar=True)
 
     return
