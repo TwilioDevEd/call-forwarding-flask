@@ -39,24 +39,38 @@ def callcongress():
                 Thank you for calling Call Congress! If you wish to call your senators,
                 please enter your 5-digit zip code, followed by the star.
             ''')
-    # look at stuff ON response and then do stuff?
+
     return str(response)
 
 @app.route('/callcongress/state-lookup', methods=['GET', 'POST'])
-def state_lookup(state=None):
+def state_lookup():
     """Look up state from given zipcode."""
+    # TODO: handle zips that don't map to any State
+    zip_digits = request.values.get('Digits', None)
+    zip_obj = Zipcode.query.filter_by(zipcode=zip_digits).first()
+    state_obj = State.query.filter_by(name=zip_obj.state).first()
+    return redirect(url_for('call_senators', state_id=state_obj.id))
 
-    if not state:
-        zip_digits = request.values.get('Digits', None)
-        # Map zipcode to our DB/map of states
-    
-    # look up senators
 
-    pass
+@app.route('/callcongress/collect-zip', methods=['GET', 'POST'])
+def collect_zip():
+    response = twiml.Response()
+    # Prompt for zipcode and redirect to state_lookup
+    with response.gather(numDigits=5, action='/callcongress/state-lookup', method='POST') as g:
+        g.say('''
+            If you wish to call your senators, please enter your 5-digit zip code,
+            followed by the star.
+        ''')
+    return str(response)
+
 
 @app.route('/callcongress/set-state', methods=['GET', 'POST'])
 def set_state():
-    """Set user's state from confirmation or user-provided Zip."""
+    """Set state for senator call list:
+
+    Set user's state from confirmation or user-provided Zip.
+    Redirect to call_senators route.
+    """
 
     # Get the digit pressed by the user
     digits_provided = request.values.get('Digits', None)
@@ -75,6 +89,7 @@ def set_state():
 @app.route('/callcongress/call-senators/<state_id>', methods=['GET', 'POST'])
 def call_senators(state_id):
     """Route for connecting caller to both of their senators."""
+
     senators = State.query.get(state_id).senators.all()
     # now we have access to senators[0].name, senators[0].phone
     for senator in senators:
