@@ -11,13 +11,12 @@ Jinja2==2.9.5
 lxml==3.7.3
 Mako==1.0.6
 MarkupSafe==1.0
-numpy==1.12.1
 packaging==16.8
 pyparsing==2.2.0
 python-editor==1.0.3
 pytz==2016.10
 six==1.10.0
 SQLAlchemy==1.1.7
-twilio==5.7.0
+twilio==6.3.dev0
 Werkzeug==0.12.1
 xmlunittest==0.4.0
