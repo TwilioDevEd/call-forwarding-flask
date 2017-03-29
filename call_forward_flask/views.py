@@ -118,6 +118,17 @@ def call_second_senator(state_id):
     response.dial(
         senators[1].phone,
         hangUpOnStar=True,
+        action=url_for('end_call')
     )
 
     return Response(str(response), 200, mimetype="application/xml")
+
+
+@app.route('/callcongress/goodbye', methods=['GET', 'POST'])
+def end_call():
+    """Thank user & hang up."""
+    response = twiml.Response()
+    response.say('''Thank you for using Call Congress!
+                 Your voice makes a difference. Goodbye.''')
+    response.hangup()
+    return str(response)
