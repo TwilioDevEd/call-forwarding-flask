@@ -8,6 +8,7 @@ Flask-SQLAlchemy==2.2
 httplib2==0.10.3
 itsdangerous==0.24
 Jinja2==2.9.5
+lxml==3.7.3
 Mako==1.0.6
 MarkupSafe==1.0
 numpy==1.12.1
@@ -19,3 +20,4 @@ six==1.10.0
 SQLAlchemy==1.1.7
 twilio==5.7.0
 Werkzeug==0.12.1
+xmlunittest==0.4.0

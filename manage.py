@@ -6,6 +6,7 @@ from flask_migrate import (
     MigrateCommand,
 )
 from flask_migrate import upgrade as upgrade_database
+from flask_migrate import migrate as migrate_database
 
 from call_forward_flask import (
     app,
@@ -29,6 +30,8 @@ def test():
     import unittest
     prepare_app(environment='test')
     upgrade_database()
+    migrate_database()
+
     tests = unittest.TestLoader().discover('.', pattern="*_tests.py")
     test_result = unittest.TextTestRunner(verbosity=2).run(tests)
 
@@ -40,6 +43,7 @@ def test():
 def dbseed():
     with open('senators.json') as senator_data:
         parsers.data_from_json(senator_data.read())
+
 
 @manager.command
 def dbseed_zips():
