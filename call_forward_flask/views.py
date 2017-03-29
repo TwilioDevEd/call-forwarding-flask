@@ -35,9 +35,9 @@ def callcongress():
             from_state=from_state
         ) as g:
             g.say("Thank you for calling congress! It looks like " +
-                  "you\'re calling from {}. If this is correct, " +
-                  "please press 1. Press 2 if this is not your current " +
-                  "state of residence.".format(from_state))
+                  "you\'re calling from {}. ".format(from_state) +
+                  "If this is correct, please press 1. Press 2 if " +
+                  "this is not your current state of residence.")
     else:
         with response.gather(
             numDigits=5,
@@ -128,8 +128,7 @@ def call_senators(state_id):
 def call_second_senator(state_id):
     senators = State.query.get(state_id).senators.all()
     response = twiml.Response()
-    response.say(
-        '''Connecting you to {}.'''.format(senators[1].name))
+    response.say("Connecting you to {}.".format(senators[1].name))
     response.dial(
         senators[1].phone,
         hangUpOnStar=True,
