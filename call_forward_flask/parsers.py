@@ -21,19 +21,18 @@ def data_from_json(data):
     return
 
 
-
 def senators_from_json(senator_data):
     """Parse senator data from json file for db."""
     senators = []
 
     for senator in senator_data:
         name = senator['name'],
-        state = senator['state'],
         phone = senator['phone']
 
         senators.append(Senator(name=name[0], phone_number=phone))
 
     return senators
+
 
 def zips_from_csv(zipcode_data):
     # We can skip the first line from csv as it just defines columns
