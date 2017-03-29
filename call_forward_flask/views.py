@@ -1,26 +1,24 @@
+
+from call_forward_flask import app, client
+from call_forward_flask.models import (
+    State,
+    Zipcode,
+)
+
 from flask import (
-    Flask,
+    Response,
     redirect,
     render_template,
-    Response,
     request,
     url_for,
 )
 from twilio import twiml
 
-from . import app, client
-from models import (
-    Senator,
-    State,
-    Zipcode,
-)
-from helpers import (
-    senator_lookup_by_state,
-)
 
 @app.route('/')
 def hello():
     return render_template('index.html')
+
 
 @app.route('/callcongress/welcome', methods=['POST'])
 def callcongress():
@@ -30,20 +28,28 @@ def callcongress():
     from_state = request.values.get('FromState', None)
 
     if from_state:
-        with response.gather(numDigits=1, action='/callcongress/set-state', method='POST', from_state=from_state) as g:
-            g.say('''
-                Thank you for calling congress! It looks like you\'re calling from {}.
-                If this is correct, please press 1.
-                Press 2 if this is not your current state of residence.
-            '''.format(from_state))
+        with response.gather(
+            numDigits=1,
+            action='/callcongress/set-state',
+            method='POST',
+            from_state=from_state
+        ) as g:
+            g.say("Thank you for calling congress! It looks like " +
+                  "you\'re calling from {}. If this is correct, " +
+                  "please press 1. Press 2 if this is not your current " +
+                  "state of residence.".format(from_state))
     else:
-        with response.gather(numDigits=5, action='/callcongress/state-lookup', method='POST') as g:
-            g.say('''
-                Thank you for calling Call Congress! If you wish to call your senators,
-                please enter your 5-digit zip code, followed by the star.
-            ''')
+        with response.gather(
+            numDigits=5,
+            action='/callcongress/state-lookup',
+            method='POST'
+        ) as g:
+            g.say("Thank you for calling Call Congress! If you wish to " +
+                  "call your senators, please enter your 5-digit zip code, " +
+                  "followed by the star.")
 
     return Response(str(response), 200, mimetype="application/xml")
+
 
 @app.route('/callcongress/state-lookup', methods=['GET', 'POST'])
 def state_lookup():
@@ -62,11 +68,13 @@ def state_lookup():
 def collect_zip():
     response = twiml.Response()
     # Prompt for zipcode and redirect to state_lookup
-    with response.gather(numDigits=5, action='/callcongress/state-lookup', method='POST') as g:
-        g.say('''
-            If you wish to call your senators, please enter your 5-digit zip code,
-            followed by the star.
-        ''')
+    with response.gather(
+        numDigits=5,
+        action='/callcongress/state-lookup',
+        method='POST'
+    ) as g:
+        g.say("If you wish to call your senators, please enter " +
+              "your 5-digit zip code,followed by the star.")
     return Response(str(response), 200, mimetype="application/xml")
 
 
@@ -80,7 +88,7 @@ def set_state():
 
     # Get the digit pressed by the user
     digits_provided = request.values.get('Digits', None)
-    
+
     # Set state if State correct, else prompt for zipcode.
     if digits_provided == '1':
         state = request.values.get('CallerState')
@@ -99,8 +107,10 @@ def call_senators(state_id):
 
     response = twiml.Response()
     response.say(
-        '''Connecting you to {}. After the senator's office ends the call,
-        you will be re-directed to {}.'''.format(senators[0].name, senators[1].name))
+        "Connecting you to {}. ".format(senators[0].name) +
+        "After the senator's office ends the call, you will " +
+        "be re-directed to {}.".format(senators[1].name)
+    )
     response.dial(
         senators[0].phone,
         # TODO: hanguponstar doesn't work yet.
@@ -110,7 +120,11 @@ def call_senators(state_id):
 
     return Response(str(response), 200, mimetype="application/xml")
 
-@app.route('/callcongress/call-second-senator/<state_id>', methods=['GET', 'POST'])
+
+@app.route(
+    '/callcongress/call-second-senator/<state_id>',
+    methods=['GET', 'POST']
+)
 def call_second_senator(state_id):
     senators = State.query.get(state_id).senators.all()
     response = twiml.Response()
@@ -129,7 +143,7 @@ def call_second_senator(state_id):
 def end_call():
     """Thank user & hang up."""
     response = twiml.Response()
-    response.say('''Thank you for using Call Congress!
-                 Your voice makes a difference. Goodbye.''')
+    response.say("Thank you for using Call Congress! " +
+                 "Your voice makes a difference. Goodbye.")
     response.hangup()
-    return str(response)
+    return Response(str(response), 200, mimetype="application/xml")
