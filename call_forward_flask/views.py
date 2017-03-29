@@ -1,6 +1,7 @@
 from flask import (
     Flask,
     redirect,
+    render_template,
     Response,
     request,
     url_for,
@@ -19,7 +20,7 @@ from helpers import (
 
 @app.route('/')
 def hello():
-    return "Hello World, you old so and so!"
+    return render_template('index.html')
 
 @app.route('/callcongress/welcome', methods=['POST'])
 def callcongress():
