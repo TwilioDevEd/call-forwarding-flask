@@ -1,5 +1,10 @@
 import os
 
+from secrets import(
+    TWILIO_ACCOUNT_SID,
+    TWILIO_AUTH_TOKEN,
+)
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -14,6 +19,10 @@ class DevelopmentConfig(DefaultConfig):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = ('sqlite:///' +
                                os.path.join(basedir, 'dev.sqlite'))
+    # Twilio API Key
+    # Found at your Twilio dashboard https://www.twilio.com/console
+    TWILIO_ACCOUNT_SID = TWILIO_ACCOUNT_SID
+    TWILIO_AUTH_TOKEN = TWILIO_AUTH_TOKEN
 
 
 class TestConfig(DefaultConfig):
