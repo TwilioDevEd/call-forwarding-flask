@@ -1,6 +1,6 @@
 import os
 
-from secrets import(
+from call_forward_flask.secrets import(
     TWILIO_ACCOUNT_SID,
     TWILIO_AUTH_TOKEN,
 )
