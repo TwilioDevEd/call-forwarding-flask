@@ -18,15 +18,11 @@ $ pip install -r requirements.txt
 ```
 4. Copy the .env_example file to .env, and edit it to match your configuration.
 5. Run `source .env` to apply environment variables. Even better, use [autoenv](https://github.com/kennethreitz/autoenv).
-6. Initialize your database:
-```
-$ python manage.py db init
-```
-7. Run the migrations:
+6. Run the migrations:
 ```
 $ python manage.py db upgrade
 ```
-8. Seed the database with data:
+7. Seed the database with data:
 ```
 $ python manage.py dbseed
 ```
@@ -34,7 +30,7 @@ $ python manage.py dbseed
 $ python manage.py dbseed_zips
 ```
 This will load senators.json into your SQLit database.
-9. Expose your application to the internet using [ngrok](https://www.twilio.com/blog/2015/09/6-awesome-reasons-to-use-ngrok-when-testing-webhooks.html).
+8. Expose your application to the internet using [ngrok](https://www.twilio.com/blog/2015/09/6-awesome-reasons-to-use-ngrok-when-testing-webhooks.html).
 ```
 $ ngrok http 5000
 ```
@@ -42,7 +38,7 @@ Once you have started ngrok, update your TwiML application's voice URL setting t
 ```
 https://d06f533b.ngrok.io/callcongress/welcome
 ```
-10. Start your development server:
+9. Start your development server:
 ```
 $ python manage.py runserver
 ```
