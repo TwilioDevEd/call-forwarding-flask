@@ -9,6 +9,12 @@ from flask import url_for
 
 class CallForwardTests(BaseTest):
 
+    def test_root_route(self):
+        """Test that our / route uses the index.html landing page."""
+        response = self.client.get('/')
+
+        self.assertTrue("Call Congress" in response.data)
+
     def test_get_state_on_call_no_from_state_triggers_lookup(self):
         """Test that an incoming call missing state data collects zipcode."""
         response = self.client.post('/callcongress/welcome')
