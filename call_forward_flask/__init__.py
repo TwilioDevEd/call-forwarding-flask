@@ -4,12 +4,18 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from twilio.rest import TwilioRestClient
 
-from call_forward_flask.config import config_env_files
+from call_forward_flask.config import (
+    config_env_files,
+    DevelopmentConfig
+)
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dev.sqlite'
 db = SQLAlchemy()
-client = TwilioRestClient()
+client = TwilioRestClient(
+    account=DevelopmentConfig.TWILIO_ACCOUNT_SID,
+    token=DevelopmentConfig.TWILIO_AUTH_TOKEN
+)
 
 
 def prepare_app(environment='development', p_db=db):
