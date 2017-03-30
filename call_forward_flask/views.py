@@ -1,6 +1,6 @@
-
-from call_forward_flask import app, client
+from call_forward_flask import app
 from call_forward_flask.models import (
+    Senator,
     State,
     Zipcode,
 )
@@ -105,32 +105,35 @@ def call_senators(state_id):
     senators = State.query.get(state_id).senators.all()
 
     response = twiml.Response()
+
+    first_call = senators[0]
+    second_call = senators[1]
+
     response.say(
-        "Connecting you to {}. ".format(senators[0].name) +
+        "Connecting you to {}. ".format(first_call.name) +
         "After the senator's office ends the call, you will " +
-        "be re-directed to {}.".format(senators[1].name)
+        "be re-directed to {}.".format(second_call.name)
     )
+
     response.dial(
-        senators[0].phone,
-        # TODO: hanguponstar doesn't work yet.
-        hangUpOnStar=True,
-        action=url_for('call_second_senator', state_id=state_id)
+        first_call.phone,
+        action=url_for('call_second_senator', senator_id=second_call.id)
     )
 
     return Response(str(response), 200, mimetype="application/xml")
 
 
 @app.route(
-    '/callcongress/call-second-senator/<state_id>',
+    '/callcongress/call-second-senator/<senator_id>',
     methods=['GET', 'POST']
 )
-def call_second_senator(state_id):
-    senators = State.query.get(state_id).senators.all()
+def call_second_senator(senator_id):
+    senator = Senator.query.get(senator_id)
+
     response = twiml.Response()
-    response.say("Connecting you to {}.".format(senators[1].name))
+    response.say("Connecting you to {}.".format(senator.name))
     response.dial(
-        senators[1].phone,
-        hangUpOnStar=True,
+        senator.phone,
         action=url_for('end_call')
     )
 

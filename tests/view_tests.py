@@ -99,10 +99,12 @@ class CallForwardTests(BaseTest):
 
         # Assert we tell the caller we're connecting them
         senators = State.query.get(state_id).senators.all()
+        first_sen = senators[0]
+        second_sen = senators[1]
         forwarding_str = (
-            "Connecting you to {}. ".format(senators[0].name) +
+            "Connecting you to {}. ".format(first_sen.name) +
             "After the senator's office ends the call, you " +
-            "will be re-directed to {}.".format(senators[1].name)
+            "will be re-directed to {}.".format(second_sen.name)
         )
         self.assertEqual(
             root.xpath('./Say')[0].text,
@@ -112,13 +114,14 @@ class CallForwardTests(BaseTest):
         # Assert that we've followed the redirect and will send to second
         self.assertEqual(
             root.xpath('./Dial')[0].get('action'),
-            '/callcongress/call-second-senator/{}'.format(state_id)
+            '/callcongress/call-second-senator/{}'.format(second_sen.id)
         )
 
     def test_call_senators_dials_first_sen(self):
         """Test an incoming call from IL routes to 1st IL senator."""
         response = self.client.post(url_for('call_senators', state_id=1))
         root = self.assertXmlDocument(response.data)
+
         il = State.query.filter_by(name='IL').first()
         il_sen_phone = il.senators.first().phone
 
@@ -130,12 +133,14 @@ class CallForwardTests(BaseTest):
     def test_call_senators_redirects_to_second(self):
         """Test that this route will redirect to second sen after call ends."""
         state_id = 1
+        senators = State.query.get(state_id).senators.all()
+
         response = self.client.post(
             url_for('call_senators', state_id=state_id)
         )
         root = self.assertXmlDocument(response.data)
         next_sen_route = '/callcongress/call-second-senator/{}'.format(
-            state_id
+            senators[1].id
         )
         self.assertEqual(
             next_sen_route,
@@ -144,20 +149,27 @@ class CallForwardTests(BaseTest):
 
     def test_call_second_senator(self):
         """Test call_second_senator dials second senator."""
-        response = self.client.post(url_for('call_second_senator', state_id=1))
-        root = self.assertXmlDocument(response.data)
         il = State.query.filter_by(name='IL').first()
-        # Get the 'second' senator for this state
-        next_sen_phone = il.senators.all()[1].phone
+        senators = State.query.get(il.id).senators.all()
+
+        response = self.client.post(url_for(
+            'call_second_senator', senator_id=senators[1].id)
+        )
+        root = self.assertXmlDocument(response.data)
 
         self.assertEqual(
-            [next_sen_phone],
+            [senators[1].phone],
             root.xpath('./Dial/text()')
         )
 
     def test_call_second_senator_redirects_to_goodbye(self):
         """Test that this route will redirect to /goodbye after call ends."""
-        response = self.client.post(url_for('call_second_senator', state_id=1))
+        il = State.query.filter_by(name='IL').first()
+        senators = State.query.get(il.id).senators.all()
+
+        response = self.client.post(url_for(
+            'call_second_senator', senator_id=senators[1].id)
+        )
         root = self.assertXmlDocument(response.data)
         goodbye_route = '/callcongress/goodbye'
         self.assertEqual(
