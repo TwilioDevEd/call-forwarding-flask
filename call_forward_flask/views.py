@@ -57,11 +57,10 @@ def state_lookup():
 
     Once state is found, redirect to call_senators for forwarding.
     """
-    # TODO: handle zips that don't map to any State
     zip_digits = request.values.get('Digits', None)
     zip_obj = Zipcode.query.filter_by(zipcode=zip_digits).first()
-    state_obj = State.query.filter_by(name=zip_obj.state).first()
-    return redirect(url_for('call_senators', state_id=state_obj.id))
+
+    return redirect(url_for('call_senators', state_id=zip_obj.state_id))
 
 
 @app.route('/callcongress/collect-zip', methods=['GET', 'POST'])

@@ -25,6 +25,12 @@ class Zipcode(db.Model):
         self.zipcode = zipcode
         self.state = state
 
+    @property
+    def state_id(self):
+        state_obj = State.query.filter_by(name=self.state).first()
+        return state_obj.id
+
+
 class Senator(db.Model):
     """id | state (fk) | name | phone"""
     __tablename__ = 'senators'
