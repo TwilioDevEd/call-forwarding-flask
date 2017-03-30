@@ -1,6 +1,6 @@
 # Advanced Call Forwarding with Python, Flask, and Twilio
 
-Learn how to use [Twilio](https://www.twilio.com) to forward a series of phone calls.
+Learn how to use [Twilio](https://www.twilio.com) to forward a series of phone calls to your state senators.
 
 ## Local Development
 This project is built using the [Flask](http://flask.pocoo.org/) web framework, and runs on Python 2.7+ and Python 3.4+
@@ -45,4 +45,16 @@ $ python manage.py runserver
 Once ngrok is running, open up your browser and go to your ngrok URL.
 
 
+## Run the Tests
+Run the tests locally with [coverage](http://coverage.readthedocs.org/):
+```
+coverage run manage.py test
+```
+You can then view the coverage results with `coverage report` or build an HTML report with `coverage html`.
 
+*Note: If coverage seems to run way too many files, you can omit directories by adjusting your coverage command to something like `coverage run --omit=venv/* manage.py test`. See the [coverage docs](http://coverage.readthedocs.org/) for more information.*
+
+## Meta
+* No warranty expressed or implied. Software is as is. Diggity.
+* [MIT License](https://opensource.org/licenses/mit-license.html)
+* Lovingly crafted by Twilio Developer Education.
