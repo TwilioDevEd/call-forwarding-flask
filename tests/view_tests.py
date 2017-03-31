@@ -13,7 +13,8 @@ class CallForwardTests(BaseTest):
         """Test that our / route uses the index.html landing page."""
         response = self.client.get('/')
 
-        self.assertTrue("Call Congress" in response.data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue("Call Forward" in response.data)
 
     def test_get_state_on_call_no_from_state_triggers_lookup(self):
         """Test that an incoming call missing state data collects zipcode."""
