@@ -58,6 +58,9 @@ def state_lookup():
     Once state is found, redirect to call_senators for forwarding.
     """
     zip_digits = request.values.get('Digits', None)
+    # NB: We don't do any error handling for a missing/erroneous zip code
+    # in this sample application. You, gentle reader, should to handle that
+    # edge case before deploying this code.
     zip_obj = Zipcode.query.filter_by(zipcode=zip_digits).first()
 
     return redirect(url_for('call_senators', state_id=zip_obj.state_id))
