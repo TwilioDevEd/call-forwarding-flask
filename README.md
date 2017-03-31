@@ -27,7 +27,8 @@ $ python manage.py db upgrade
 $ python manage.py dbseed
 ```
 This will load senators.json and US zip codes into your SQLite database.
-*Please note: our senators dataset is likely outdated, and we've mapped senators to placeholder phone numbers that are set up with Twilio to read a message and hang up*.
+Please note: our senators dataset is likely outdated, and we've mapped senators to placeholder phone numbers that are set up with Twilio to read a message and hang up.
+
 7. Expose your application to the internet using [ngrok](https://www.twilio.com/blog/2015/09/6-awesome-reasons-to-use-ngrok-when-testing-webhooks.html). In a separate terminal session, start ngrok with:
 ```
 $ ngrok http 5000
