@@ -1,3 +1,4 @@
+"""View tests for call_forward_flask application."""
 from base import BaseTest
 
 from call_forward_flask.models import(
@@ -8,6 +9,7 @@ from flask import url_for
 
 
 class CallForwardTests(BaseTest):
+    """Tests for our call_forward_flask views."""
 
     def test_root_route(self):
         """Test that our / route uses the index.html landing page."""
@@ -31,6 +33,7 @@ class CallForwardTests(BaseTest):
         )
 
     def test_get_state_on_call_with_from_state(self):
+        """Test that an incoming call with fromState will set state."""
         response = self.client.post(
             '/callcongress/welcome', data=dict(FromState='IL')
         )
@@ -53,7 +56,6 @@ class CallForwardTests(BaseTest):
 
     def test_post_to_set_state_with_digit_1(self):
         """User who accepts state should be directed to senator call."""
-
         caller_state = 'IL'
         response = self.client.post(
             '/callcongress/set-state',

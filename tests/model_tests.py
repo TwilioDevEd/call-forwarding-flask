@@ -1,3 +1,4 @@
+"""Model tests for call_forward_flask application."""
 from base import BaseTest
 
 from call_forward_flask.models import(
@@ -7,6 +8,7 @@ from call_forward_flask.models import(
 
 
 class ModelTests(BaseTest):
+    """Tests for our call_forward_flask models."""
 
     def test_zipcode_state_id(self):
         """Test that the state_id property on Zipcode works as expected."""
