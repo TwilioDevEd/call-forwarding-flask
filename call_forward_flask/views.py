@@ -45,8 +45,7 @@ def callcongress():
             method='POST'
         ) as g:
             g.say("Thank you for calling Call Congress! If you wish to " +
-                  "call your senators, please enter your 5-digit zip code, " +
-                  "followed by the star.")
+                  "call your senators, please enter your 5-digit zip code.")
 
     return Response(str(response), 200, mimetype="application/xml")
 
@@ -75,8 +74,8 @@ def collect_zip():
         action='/callcongress/state-lookup',
         method='POST'
     ) as g:
-        g.say("If you wish to call your senators, please enter " +
-              "your 5-digit zip code,followed by the star.")
+        g.say("If you wish to call your senators, please " +
+              "enter your 5-digit zip code.")
     return Response(str(response), 200, mimetype="application/xml")
 
 
