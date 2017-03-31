@@ -1,19 +1,20 @@
 import csv
 
-from flask_script import Manager
-from flask_migrate import (
-    Migrate,
-    MigrateCommand,
-)
-from flask_migrate import upgrade as upgrade_database
-from flask_migrate import migrate as migrate_database
-
 from call_forward_flask import (
     app,
     db,
     parsers,
     prepare_app
 )
+
+from flask_migrate import (
+    Migrate,
+    MigrateCommand,
+)
+from flask_migrate import migrate as migrate_database
+from flask_migrate import upgrade as upgrade_database
+
+from flask_script import Manager
 
 
 prepare_app(environment='development')
