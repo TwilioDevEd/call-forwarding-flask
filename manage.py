@@ -42,12 +42,9 @@ def test():
 
 @manager.command
 def dbseed():
+    """Seed db with states, senators and zip codes."""
     with open('senators.json') as senator_data:
         parsers.data_from_json(senator_data.read())
-
-
-@manager.command
-def dbseed_zips():
     with open('free-zipcode-database.csv') as zip_data:
         zip_list = []
         reader = csv.reader(zip_data, delimiter=",")
