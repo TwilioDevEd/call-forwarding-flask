@@ -2,7 +2,8 @@ from call_forward_flask import db
 
 
 class State(db.Model):
-    """id | name | senators"""
+    """Schema for State model."""
+
     __tablename__ = 'states'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -14,7 +15,8 @@ class State(db.Model):
 
 
 class Zipcode(db.Model):
-    """id | zip | state (fk)"""
+    """Schema for Zipcode model."""
+
     __tablename__ = 'zipcodes'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -27,12 +29,14 @@ class Zipcode(db.Model):
 
     @property
     def state_id(self):
+        """Get State ID from zipcode."""
         state_obj = State.query.filter_by(name=self.state).first()
         return state_obj.id
 
 
 class Senator(db.Model):
-    """id | state (fk) | name | phone"""
+    """Schema for Senator model."""
+
     __tablename__ = 'senators'
 
     id = db.Column(db.Integer, primary_key=True)

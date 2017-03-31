@@ -9,6 +9,7 @@ from call_forward_flask.models import (
 
 
 def data_from_json(data):
+    """Load data and set state/senators on db."""
     state_list = json.loads(data).get('states')
 
     for s in state_list:
@@ -35,6 +36,7 @@ def senators_from_json(senator_data):
 
 
 def zips_from_csv(zipcode_data):
+    """Pull in all zipcodes, save in db."""
     # We can skip the first line from csv as it just defines columns
     all_zipcodes = []
     for zipcode in zipcode_data[1:]:

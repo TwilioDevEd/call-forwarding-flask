@@ -17,12 +17,13 @@ from twilio import twiml
 
 @app.route('/')
 def hello():
+    """Very basic route to landing page."""
     return render_template('index.html')
 
 
 @app.route('/callcongress/welcome', methods=['POST'])
 def callcongress():
-    """Verify or collect State intofrmation"""
+    """Verify or collect State intofrmation."""
     response = twiml.Response()
 
     from_state = request.values.get('FromState', None)
@@ -67,8 +68,9 @@ def state_lookup():
 
 @app.route('/callcongress/collect-zip', methods=['GET', 'POST'])
 def collect_zip():
+    """If our state guess is wrong, prompt user for zip code."""
     response = twiml.Response()
-    # Prompt for zipcode and redirect to state_lookup
+
     with response.gather(
         numDigits=5,
         action='/callcongress/state-lookup',
@@ -81,12 +83,11 @@ def collect_zip():
 
 @app.route('/callcongress/set-state', methods=['GET', 'POST'])
 def set_state():
-    """Set state for senator call list:
+    """Set state for senator call list.
 
     Set user's state from confirmation or user-provided Zip.
     Redirect to call_senators route.
     """
-
     # Get the digit pressed by the user
     digits_provided = request.values.get('Digits', None)
 
@@ -103,7 +104,6 @@ def set_state():
 @app.route('/callcongress/call-senators/<state_id>', methods=['GET', 'POST'])
 def call_senators(state_id):
     """Route for connecting caller to both of their senators."""
-
     senators = State.query.get(state_id).senators.all()
 
     response = twiml.Response()
@@ -130,6 +130,7 @@ def call_senators(state_id):
     methods=['GET', 'POST']
 )
 def call_second_senator(senator_id):
+    """Forward the caller to their second senator."""
     senator = Senator.query.get(senator_id)
 
     response = twiml.Response()
