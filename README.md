@@ -12,11 +12,12 @@ To run the app locally, follow these steps:
     $ virtualenv venv
     $ source venv/bin/activate
     ```
+This application is compatible with Python versions 2.7 and 3.5, so feel free to use whichever installation you prefer in your environment.
 3. Install the requirements:
 ```
 $ pip install -r requirements.txt
 ```
-4. Update call_forward_flask/secrets.py to include your very own [Twilio credentials](https://www.twilio.com/console)
+4. Update call_forward_flask/secrets.py to include your very own [Twilio credentials](https://www.twilio.com/console). We'll read from this file when setting the config for the app. Remember to keep secrets a secret and don't check in your changes to that file.
 5. Run the migrations:
 ```
 $ python manage.py db upgrade
@@ -29,7 +30,7 @@ $ python manage.py dbseed
 $ python manage.py dbseed_zips
 ```
 This will load senators.json into your SQLit database.
-7. Expose your application to the internet using [ngrok](https://www.twilio.com/blog/2015/09/6-awesome-reasons-to-use-ngrok-when-testing-webhooks.html).
+7. Expose your application to the internet using [ngrok](https://www.twilio.com/blog/2015/09/6-awesome-reasons-to-use-ngrok-when-testing-webhooks.html). In a separate terminal session, start ngrok with:
 ```
 $ ngrok http 5000
 ```
