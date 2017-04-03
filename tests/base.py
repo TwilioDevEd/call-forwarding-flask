@@ -38,12 +38,12 @@ class BaseTest(XmlTestCase):
         """Seed test db with small dataset for testing."""
         self.senator1 = Senator(
             name='Kat Kent',
-            phone_number='+16468635472'
+            phone_number='+12174412652 '
         )
         self.db.save(self.senator1)
         self.senator2 = Senator(
             name='Foo Bar',
-            phone_number='+17738095281'
+            phone_number='+19523334441 '
         )
         self.db.save(self.senator2)
 

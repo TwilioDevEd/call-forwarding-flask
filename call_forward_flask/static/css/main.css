@@ -1,10 +1,10 @@
 .hero-text {
-    background: url(/static/images/jefferson-memorial.jpg);
+    background: url(/static/images/capitol.jpg);
     margin: 0px;
     top: 0px;
     text-align: center;
     padding: 25%;
-    color: #344342;
+    color: white;
     background-size: cover;
     text-shadow:
         -.5px -.5px 0 white,
@@ -23,7 +23,8 @@
 .hero-text h1 {
     font-size: 60px;
     text-transform: uppercase;
-    color: #35728a;
+    font-weight: bold;
+    color: #273769;
     text-shadow: 2px 2px 2px white;
 }
 
