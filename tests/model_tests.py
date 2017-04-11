@@ -1,5 +1,5 @@
 """Model tests for call_forward_flask application."""
-from base import BaseTest
+from .base import BaseTest
 
 from call_forward_flask.models import(
     State,

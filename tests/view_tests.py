@@ -1,5 +1,5 @@
 """View tests for call_forward_flask application."""
-from base import BaseTest
+from .base import BaseTest
 
 from call_forward_flask.models import(
     State,
@@ -16,7 +16,7 @@ class CallForwardTests(BaseTest):
         response = self.client.get('/')
 
         self.assertEqual(response.status_code, 200)
-        self.assertTrue("Call Forward" in response.data)
+        self.assertIn(b"Call Forward", response.data)
 
     def test_get_state_on_call_no_from_state_triggers_lookup(self):
         """Test that an incoming call missing state data collects zipcode."""
@@ -50,7 +50,7 @@ class CallForwardTests(BaseTest):
 
         # Assert redirect contains caller's from_state
         self.assertEqual(
-            root.xpath('./Gather')[0].get('from_state'),
+            root.xpath('./Gather')[0].get('fromState'),
             'IL'
         )
 

@@ -1,11 +1,39 @@
-.hero-text {
-    background: url(/static/images/capitol.jpg);
-    margin: 0px;
-    top: 0px;
-    text-align: center;
-    padding: 25%;
+@import url(http://fonts.googleapis.com/css?family=Raleway:400,600,300);
+
+html { 
+  background: url(/static/images/jefferson-memorial.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+body {
+    font-family: 'Raleway', sans-serif;
+}
+
+footer {
+    font-size: 12px;
     color: white;
-    background-size: cover;
+    position: absolute;
+    text-align: center;
+    margin: auto;
+    bottom: 0;
+    height: 50px;
+    width: 100%;
+}
+
+footer i {
+    color:#ff0000;
+}
+
+.hero-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    color: black;
     text-shadow:
         -.5px -.5px 0 white,
         .5px -.5px 0 white,

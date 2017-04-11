@@ -12,7 +12,7 @@ from flask import (
     request,
     url_for,
 )
-from twilio import twiml
+from twilio.twiml.voice_response import VoiceResponse, Gather
 
 
 @app.route('/')
@@ -24,30 +24,31 @@ def hello():
 @app.route('/callcongress/welcome', methods=['POST'])
 def callcongress():
     """Verify or collect State intofrmation."""
-    response = twiml.Response()
+    response = VoiceResponse()
 
     from_state = request.values.get('FromState', None)
 
     if from_state:
-        with response.gather(
-            numDigits=1,
+        gather = Gather(
+            num_digits=1,
             action='/callcongress/set-state',
             method='POST',
             from_state=from_state
-        ) as g:
-            g.say("Thank you for calling congress! It looks like " +
-                  "you\'re calling from {}. ".format(from_state) +
-                  "If this is correct, please press 1. Press 2 if " +
-                  "this is not your current state of residence.")
+        )
+        gather.say("Thank you for calling congress! It looks like " +
+                   "you\'re calling from {}. ".format(from_state) +
+                   "If this is correct, please press 1. Press 2 if " +
+                   "this is not your current state of residence.")
     else:
-        with response.gather(
-            numDigits=5,
+        gather = Gather(
+            num_digits=5,
             action='/callcongress/state-lookup',
             method='POST'
-        ) as g:
-            g.say("Thank you for calling Call Congress! If you wish to " +
-                  "call your senators, please enter your 5-digit zip code.")
+        )
+        gather.say("Thank you for calling Call Congress! If you wish to " +
+                   "call your senators, please enter your 5-digit zip code.")
 
+    response.append(gather)
     return Response(str(response), 200, mimetype="application/xml")
 
 
@@ -69,15 +70,16 @@ def state_lookup():
 @app.route('/callcongress/collect-zip', methods=['GET', 'POST'])
 def collect_zip():
     """If our state guess is wrong, prompt user for zip code."""
-    response = twiml.Response()
+    response = VoiceResponse()
 
-    with response.gather(
-        numDigits=5,
+    gather = Gather(
+        num_digits=5,
         action='/callcongress/state-lookup',
         method='POST'
-    ) as g:
-        g.say("If you wish to call your senators, please " +
-              "enter your 5-digit zip code.")
+    )
+    gather.say("If you wish to call your senators, please " +
+               "enter your 5-digit zip code.")
+    response.append(gather)
     return Response(str(response), 200, mimetype="application/xml")
 
 
@@ -95,10 +97,10 @@ def set_state():
     if digits_provided == '1':
         state = request.values.get('CallerState')
         state_obj = State.query.filter_by(name=state).first()
-        return redirect(url_for('call_senators', state_id=int(state_obj.id)))
+        if state_obj:
+            return redirect(url_for('call_senators', state_id=int(state_obj.id)))
 
-    elif digits_provided == '2':
-        return redirect(url_for('collect_zip'))
+    return redirect(url_for('collect_zip'))
 
 
 @app.route('/callcongress/call-senators/<state_id>', methods=['GET', 'POST'])
@@ -106,7 +108,7 @@ def call_senators(state_id):
     """Route for connecting caller to both of their senators."""
     senators = State.query.get(state_id).senators.all()
 
-    response = twiml.Response()
+    response = VoiceResponse()
 
     first_call = senators[0]
     second_call = senators[1]
@@ -133,7 +135,7 @@ def call_second_senator(senator_id):
     """Forward the caller to their second senator."""
     senator = Senator.query.get(senator_id)
 
-    response = twiml.Response()
+    response = VoiceResponse()
     response.say("Connecting you to {}.".format(senator.name))
     response.dial(
         senator.phone,
@@ -146,7 +148,7 @@ def call_second_senator(senator_id):
 @app.route('/callcongress/goodbye', methods=['GET', 'POST'])
 def end_call():
     """Thank user & hang up."""
-    response = twiml.Response()
+    response = VoiceResponse()
     response.say("Thank you for using Call Congress! " +
                  "Your voice makes a difference. Goodbye.")
     response.hangup()
