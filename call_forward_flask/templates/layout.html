@@ -12,22 +12,16 @@
 
     <link type="text/css" href="/static/css/main.css" rel="stylesheet"/>
 
-    <link type="text/css" href="/static/css/vacation_properties.css" rel="stylesheet"/>
-    <link type="text/css" href="/static/css/site.css" rel="stylesheet"/>
-
     <link rel="stylesheet" media="all"
           href="http://cdnjs.cloudflare.com/ajax/libs/authy-forms.css/2.2/form.authy.min.css"/>
-    <link rel="shortcut icon"
-          href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
 
 <body>
-  {% block hero %} {% endblock %}
   <section id="main" class="push-nav">
     {% block content %} {% endblock %}
   </section>
 
-  <footer class="container">
+  <footer>
     Made with <i class="fa fa-heart"></i> by your pals
     <a href="http://www.twilio.com">@twilio</a>
   </footer>
