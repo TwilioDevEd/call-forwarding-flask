@@ -1,4 +1,10 @@
+<a href="https://www.twilio.com">
+  <img src="https://static0.twilio.com/marketing/bundles/marketing/img/logos/wordmark-red.svg" alt="Twilio" width="250" />
+</a>
+
 # Advanced Call Forwarding with Python, Flask, and Twilio
+
+[![Build status](https://api.travis-ci.org/TwilioDevEd/call-forwarding-flask.svg?branch=master)](https://ci.appveyor.com/project/TwilioDevEd/call-forwarding-flask)
 
 Learn how to use [Twilio](https://www.twilio.com) to forward a series of phone calls to your state senators.
 
