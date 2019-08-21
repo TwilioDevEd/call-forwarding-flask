@@ -19,5 +19,5 @@ pytz==2016.10
 six==1.10.0
 SQLAlchemy==1.1.7
 twilio==6.9.0
-Werkzeug==0.12.1
+Werkzeug==0.15.3
 xmlunittest==0.4.0
