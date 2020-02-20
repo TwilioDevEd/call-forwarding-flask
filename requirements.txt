@@ -18,6 +18,6 @@ python-editor==1.0.3
 pytz==2016.10
 six==1.10.0
 SQLAlchemy==1.1.7
-twilio==6.9.0
+twilio==6.35.5
 Werkzeug==0.12.1
 xmlunittest==0.4.0
