@@ -4,7 +4,7 @@
 
 # Advanced Call Forwarding with Python, Flask, and Twilio
 
-[![Build status](https://api.travis-ci.org/TwilioDevEd/call-forwarding-flask.svg?branch=master)](https://ci.appveyor.com/project/TwilioDevEd/call-forwarding-flask)
+![Flask](https://github.com/TwilioDevEd/call-forwarding-flask/workflows/Flask/badge.svg)
 
 Learn how to use [Twilio](https://www.twilio.com) to forward a series of phone calls to your state senators.
 
@@ -19,27 +19,31 @@ To run the app locally, follow these steps:
 1. Create a new virtual environment with [virtualenv](https://virtualenv.pypa.io/en/latest/):
 
    ```bash
-   virtualenv venv \
+   python3 -m venv venv
    source venv/bin/activate
    ```
-
-   This application is compatible with Python versions 2.7 and 3.5, so feel free to use whichever installation you prefer in your environment.
 
 1. Install the requirements:
 
    ```bash
    pip install -r requirements.txt
    ```
+   
+1. Activate Flask environment for development:
+   
+   ```bash
+   export FLASK_ENV=development
+   ```
 
 1. Run the migrations:
 
-   ```
+   ```bash
    python manage.py db upgrade
    ```
 
 1. Seed the database with data:
 
-   ```
+   ```bash
    python manage.py dbseed
    ```
 
@@ -50,7 +54,7 @@ To run the app locally, follow these steps:
    [ngrok](https://www.twilio.com/blog/2015/09/6-awesome-reasons-to-use-ngrok-when-testing-webhooks.html).
    In a separate terminal session, start ngrok with:
 
-   ```
+   ```bash
    ngrok http 5000
    ```
 
@@ -60,8 +64,8 @@ To run the app locally, follow these steps:
 
 1. Start your development server:
 
-   ```
-   $ python manage.py runserver
+   ```bash
+   python manage.py runserver
    ```
 
    Once ngrok is running, open up your browser and go to your ngrok URL.
@@ -69,8 +73,8 @@ To run the app locally, follow these steps:
 ## Run the Tests
 Run the tests locally with [coverage](http://coverage.readthedocs.org/):
 
-```
-coverage run manage.py test
+```bash
+FLAKS_ENV=testing python manage.py test
 ```
 
 You can then view the coverage results with `coverage report` or build an HTML report with `coverage html`.

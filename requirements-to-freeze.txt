@@ -1,0 +1,17 @@
+# Flask
+Flask
+
+# Flask components for forms/database/bootstrap
+Flask-Migrate
+Flask-Script
+Flask-SQLAlchemy
+Flask-WTF
+
+# External libraries
+twilio
+python-dotenv
+
+
+# Development
+flake8
+black
