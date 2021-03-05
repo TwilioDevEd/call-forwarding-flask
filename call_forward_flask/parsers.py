@@ -17,9 +17,8 @@ def data_from_json(data):
         # Add senators for this state if we have them.
         if json.loads(data).get(s):
             state.senators = senators_from_json(json.loads(data).get(s))
-        db.save(state)
-
-    return
+        db.session.add(state)
+    db.session.commit()
 
 
 def senators_from_json(senator_data):
@@ -27,7 +26,7 @@ def senators_from_json(senator_data):
     senators = []
 
     for senator in senator_data:
-        name = senator['name'],
+        name = (senator['name'],)
         phone = senator['phone']
 
         senators.append(Senator(name=name[0], phone_number=phone))

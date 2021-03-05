@@ -33,20 +33,20 @@ def callcongress():
             num_digits=1,
             action='/callcongress/set-state',
             method='POST',
-            from_state=from_state
+            from_state=from_state,
         )
-        gather.say("Thank you for calling congress! It looks like " +
-                   "you\'re calling from {}. ".format(from_state) +
-                   "If this is correct, please press 1. Press 2 if " +
-                   "this is not your current state of residence.")
+        gather.say(
+            "Thank you for calling congress! It looks like "
+            + "you\'re calling from {}. ".format(from_state)
+            + "If this is correct, please press 1. Press 2 if "
+            + "this is not your current state of residence."
+        )
     else:
-        gather = Gather(
-            num_digits=5,
-            action='/callcongress/state-lookup',
-            method='POST'
+        gather = Gather(num_digits=5, action='/callcongress/state-lookup', method='POST')
+        gather.say(
+            "Thank you for calling Call Congress! If you wish to "
+            + "call your senators, please enter your 5-digit zip code."
         )
-        gather.say("Thank you for calling Call Congress! If you wish to " +
-                   "call your senators, please enter your 5-digit zip code.")
 
     response.append(gather)
     return Response(str(response), 200, mimetype="application/xml")
@@ -72,13 +72,10 @@ def collect_zip():
     """If our state guess is wrong, prompt user for zip code."""
     response = VoiceResponse()
 
-    gather = Gather(
-        num_digits=5,
-        action='/callcongress/state-lookup',
-        method='POST'
+    gather = Gather(num_digits=5, action='/callcongress/state-lookup', method='POST')
+    gather.say(
+        "If you wish to call your senators, please " + "enter your 5-digit zip code."
     )
-    gather.say("If you wish to call your senators, please " +
-               "enter your 5-digit zip code.")
     response.append(gather)
     return Response(str(response), 200, mimetype="application/xml")
 
@@ -114,33 +111,26 @@ def call_senators(state_id):
     second_call = senators[1]
 
     response.say(
-        "Connecting you to {}. ".format(first_call.name) +
-        "After the senator's office ends the call, you will " +
-        "be re-directed to {}.".format(second_call.name)
+        "Connecting you to {}. ".format(first_call.name)
+        + "After the senator's office ends the call, you will "
+        + "be re-directed to {}.".format(second_call.name)
     )
 
     response.dial(
-        first_call.phone,
-        action=url_for('call_second_senator', senator_id=second_call.id)
+        first_call.phone, action=url_for('call_second_senator', senator_id=second_call.id)
     )
 
     return Response(str(response), 200, mimetype="application/xml")
 
 
-@app.route(
-    '/callcongress/call-second-senator/<senator_id>',
-    methods=['GET', 'POST']
-)
+@app.route('/callcongress/call-second-senator/<senator_id>', methods=['GET', 'POST'])
 def call_second_senator(senator_id):
     """Forward the caller to their second senator."""
     senator = Senator.query.get(senator_id)
 
     response = VoiceResponse()
     response.say("Connecting you to {}.".format(senator.name))
-    response.dial(
-        senator.phone,
-        action=url_for('end_call')
-    )
+    response.dial(senator.phone, action=url_for('end_call'))
 
     return Response(str(response), 200, mimetype="application/xml")
 
@@ -149,7 +139,8 @@ def call_second_senator(senator_id):
 def end_call():
     """Thank user & hang up."""
     response = VoiceResponse()
-    response.say("Thank you for using Call Congress! " +
-                 "Your voice makes a difference. Goodbye.")
+    response.say(
+        "Thank you for using Call Congress! " + "Your voice makes a difference. Goodbye."
+    )
     response.hangup()
     return Response(str(response), 200, mimetype="application/xml")

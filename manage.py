@@ -4,20 +4,16 @@ from call_forward_flask import (
     app,
     db,
     parsers,
-    prepare_app
 )
 
 from flask_migrate import (
     Migrate,
     MigrateCommand,
 )
-from flask_migrate import migrate as migrate_database
-from flask_migrate import upgrade as upgrade_database
 
 from flask_script import Manager
 
 
-prepare_app(environment='development')
 migrate = Migrate(app, db)
 
 manager = Manager(app)
@@ -29,9 +25,6 @@ def test():
     """Run the unit tests."""
     import sys
     import unittest
-    prepare_app(environment='test')
-    upgrade_database()
-    migrate_database()
 
     tests = unittest.TestLoader().discover('.', pattern="*_tests.py")
     test_result = unittest.TextTestRunner(verbosity=2).run(tests)
